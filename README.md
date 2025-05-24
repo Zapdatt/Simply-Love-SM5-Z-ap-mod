@@ -1,3 +1,15 @@
+# This is just my personal fork of Zmod.
+For the actual Zmod go [here](https://github.com/zarzob/Simply-Love-SM5)
+
+## What this fork adds:
+
+  * Reintroduciton of vocalization. Taken from [Horseys Simply Love](https://github.com/Horsey-/Horseys-Simply-Love/commit/b7c9a7cef0b7fe0455b0f2bebd6aa7dfedf1fbed)
+
+## Planned additions:
+  * Changing the grade on the result screen to be the 3d models from ITG2
+  * Reading avatars from USB
+  * Allowing for both judgement counter and visualized pacemaker (or whatever it's called. The IIDX looking one)
+
 # Zmod fork of Simply Love
 
 A fork of Simply Love with some extra features that (attempt to) enhance quality of life while playing.
