@@ -954,6 +954,22 @@ local Overrides = {
 		end
 	},
 	-------------------------------------------------------------------------
+	Vocalization = {
+		Choices = function()
+			-- Allow users to arbitrarily add new vocalizations to ./Simply Love/Vocalize/
+			-- and have those vocalizations be automatically detected
+			local vocalizations = FILEMAN:GetDirListing(THEME:GetCurrentThemeDirectory().."/Vocalize/" , true, false)
+			table.insert(vocalizations, 1, "None")
+
+			-- > 2 because "None" counts as a table item
+			if #vocalizations > 2 then
+				vocalizations[#vocalizations+1] = "Random"
+				vocalizations[#vocalizations+1] = "Blender"
+			end
+			return vocalizations
+		end
+	},
+-------------------------------------------------------------------------
 	LifeMeterType = {
 		Values = { "Standard", "Surround", "Vertical" },
 	},
