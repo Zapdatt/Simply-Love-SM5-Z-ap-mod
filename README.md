@@ -4,89 +4,18 @@ For the actual Zmod go [here](https://github.com/zarzob/Simply-Love-SM5)
 ## What this fork adds:
 
   * Reintroduciton of vocalization. Taken from [Horseys Simply Love](https://github.com/Horsey-/Horseys-Simply-Love/commit/b7c9a7cef0b7fe0455b0f2bebd6aa7dfedf1fbed)
+  * 3D-models and animations for grades from ITG2. This currently just replaces the Simply Love ones. 
 
 ## This fork does not:
 
   * Include my personal judgement fonts, vocalizations, combo fonts, etc.
 
 ## Planned additions:
-  * Changing the grade on the result screen to be the 3d models from ITG2
+  * Add an option for selecting Simply Love grades, or ITG 3d-model grades.
   * Reading avatars from USB
-  * Allowing for both judgement counter and visualized pacemaker (or whatever it's called. The IIDX looking one)
+  * Allowing for both the judgement counter and visualized pacemaker (or whatever it's called. The IIDX looking one) to be present at the same time.
 
-# Zmod fork of Simply Love
+# Further...
 
-A fork of Simply Love with some extra features that (attempt to) enhance quality of life while playing.
-
-Only for itgmania. Please use the Default branch itgmania:release
-
-## List of features that are available in this fork:
-
-  * Event specific (ITL/SRPG) leaderboards as a pane on Evaluation Screen
-  * Extra Event specific (ITL/SRPG) info on the Song Wheel
-  * Hiding Evaluation Screen panes that have no information in it (e.g. QR code pane when it has been submitted online)
-  * More information on Step Statistics
-  * GIFs on Step Statistics
-  * 10ms FA+ support
-  * Random sound support for Evaluation Screen and song start
-  * Better Screenshot naming convention
-  * Aesthetic options for lifebars
-  * Broken run measure counter
-  * Measure counter in mm:ss
-  * Three line information showing at all times in 1 player mode on the Song Wheel
-  * Profile stats for the current folder on the song wheel
-  * Tracking number of early judgments
-  * Groovestats leaderboard box on the songwheel option
-  * Held Miss judgment support
-  * Per-foot and Per-arrow scatterplot on Evaluation Screen
-  * GS Scorebox in Course Mode
-  * Updating local ITL stats file with responses from Groovestats
-  * CMod on warning for No CMOD songs (e.g. ITL)
-  * Quint support
-  * Display judgment behind arrows
-  * Display error in ms under judgment
-  * Configure font used for various theme elements
-  * BoogieStats integration
-  * Ghost data and real-time score target
-
-## Features that are now in mainline Simply Love
-
-  * Evaluation Screen time
-  * CD Titles
-  * 0ms line on the timing scatter plot on Evaluation Screen
-  * Track how much time remaining on fails, with how much stream completed if in a run
-  * Groovestats leaderboard on Step Statistics
-  * Error bar trim
-  * Judgment Tilt
-  * Column Cue countdown
-  * Stream breakdown on results screen
-  * Scatterplot scales with worst judgment
-  * Notefield shift
-  * Beat Bars in gameplay
-  * Tournament mode
-  * Event specific (ITL/SRPG) progress box on Evaluation Screen (does not appear in certain configurations)
-
-And more!
-
-# Credits
-
-This fork is worked on by Zarzob and Zankoku.
-
-Contact us on Discord at `zarzob` or `zankoku`. Alternatively you can join my [discord server](https://discord.gg/zarzob)
-
-# Additional Contributors
-
-  * sorae
-  * MegaSphere
-  * @florczakraf
-  * @HURG-IIDX
-
-# Todo/Feature Request List
-
-Stuff that might be good to implement in the near future
-
-* Automatic translation of player options from mainline profile into zmod, preserve mainline profile - `zankoku`
-* Automatically reset ratemod to 1.00 once a song is played - `zankoku`
-* Theme option to display leaderboard instead of event box in corner - `zankoku`
-* 10/15ms split functionality for error bars - `zarzob`
-* Variablise RPG / ITL iteration for folder name searches
+Feel free to reach out if you want to suggest or change something.
+Contributions are welcome.
