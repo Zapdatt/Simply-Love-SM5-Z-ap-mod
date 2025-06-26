@@ -5,6 +5,10 @@ For the actual Zmod go [here](https://github.com/zarzob/Simply-Love-SM5)
 
   * Reintroduciton of vocalization. Taken from [Horseys Simply Love](https://github.com/Horsey-/Horseys-Simply-Love/commit/b7c9a7cef0b7fe0455b0f2bebd6aa7dfedf1fbed)
 
+## This fork does not:
+
+  * Include my personal judgement fonts, vocalizations, combo fonts, etc.
+
 ## Planned additions:
   * Changing the grade on the result screen to be the 3d models from ITG2
   * Reading avatars from USB
