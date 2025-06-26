@@ -20,8 +20,8 @@ local award = AwardMap[playerStats:GetStageAward()]
 local hasStream = false
 
 -- "I passd with a q though."
-local title = GAMESTATE:GetCurrentSong():GetDisplayFullTitle()
-if title == "D" then grade = "Grade_Tier99" end
+--local title = GAMESTATE:GetCurrentSong():GetDisplayFullTitle()
+--if title == "D" then grade = "Grade_Tier99" end
 
 -- QUINT
 local ex = CalculateExScore(player, GetExJudgmentCounts(player))
