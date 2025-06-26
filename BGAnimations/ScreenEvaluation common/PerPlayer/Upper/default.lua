@@ -13,7 +13,7 @@ return Def.ActorFrame{
 	end,
 
 	-- letter grade
-	LoadActor("./LetterGrade.lua", player),
+	--LoadActor("./LetterGrade.lua", player),
 
 	-- nice
 	LoadActor("./nice.lua", player),

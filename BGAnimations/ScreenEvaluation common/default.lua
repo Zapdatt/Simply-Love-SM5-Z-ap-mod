@@ -86,18 +86,18 @@ for player in ivalues(Players) do
 	-- the per-player upper half of ScreenEvaluation, including: letter grade, nice
 	-- stepartist, difficulty text, difficulty meter, machine/personal HighScore text
 	t[#t+1] = LoadActor("./PerPlayer/Upper/default.lua", player)
-
+	
 	-- the per-player lower half of ScreenEvaluation, including:
 	-- judgment scatterplot, modifier list, disqualified text
 	t[#t+1] = LoadActor("./PerPlayer/Lower/default.lua", player)
-
+	
 	-- Save Ghost Data if player has improved their score
 	t[#t+1] = LoadActor("./PerPlayer/SaveGhostData.lua", player)
-
+	
 	-- Generate the .itl file for the player.
 	-- When the event isn't active, this actor is nil.
 	t[#t+1] = LoadActor("./PerPlayer/ItlFile.lua", player)
-
+	
 	-- Generate the .rpg file for the player to keep track of best rate mod on the songwheel
 	-- When the event isn't active, this actor is nil.
 	t[#t+1] = LoadActor("./PerPlayer/RpgRatemod.lua", player)
@@ -109,6 +109,13 @@ end
 -- Then load the Panes.
 
 t[#t+1] = LoadActor("./Panes/default.lua", NumPanes)
+
+
+--handles only the grades since they need to be on top of the panes.
+for player in ivalues(Players) do
+	t[#t+1] = LoadActor("./PerPlayer/Upper/UpperGrades.lua", player)		
+end
+
 
 -- code for handling score vocalization
 t[#t+1] = LoadActor("./ScoreVocalization.lua")
