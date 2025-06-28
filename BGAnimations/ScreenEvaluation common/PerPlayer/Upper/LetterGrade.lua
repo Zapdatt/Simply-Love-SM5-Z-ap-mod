@@ -15,7 +15,7 @@ local AwardMap = {
 
 local playerStats = STATSMAN:GetCurStageStats():GetPlayerStageStats(player)
 local grade = playerStats:GetGrade()
---local grade = "Grade_Tier00"                  --override for testing
+--local grade = "Grade_Failed"                  --override for testing
 local award = AwardMap[playerStats:GetStageAward()]
 local hasStream = false
 --local mods = SL[ToEnumShortString(player)].ActiveModifiers
