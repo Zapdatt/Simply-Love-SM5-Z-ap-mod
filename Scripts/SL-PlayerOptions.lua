@@ -935,6 +935,8 @@ local Overrides = {
 	},
 	-------------------------------------------------------------------------
 	Vocalization = {
+		LayoutType = "ShowOneInRow",
+		ExportOnChange = true,
 		Choices = function()
 			-- Allow users to arbitrarily add new vocalizations to ./Simply Love/Vocalize/
 			-- and have those vocalizations be automatically detected
@@ -948,6 +950,18 @@ local Overrides = {
 			end
 			return vocalizations
 		end
+	},
+	-------------------------------------------------------------------------
+	GradeStyle = {
+		LayoutType = "ShowOneInRow",
+		ExportOnChange = true,
+		Choices = function()
+			-- These are the grade styles available in your theme.
+			-- Make sure these names match what you use in DisplayJudgment or wherever the grade graphics are drawn.
+			local styles = { "ITG2", "ITG3", "SimplyLove"}
+			styles[#styles+1] = "Random"
+			return styles
+		end,
 	},
 -------------------------------------------------------------------------
 	LifeMeterType = {

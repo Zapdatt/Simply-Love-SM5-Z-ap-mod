@@ -17,6 +17,7 @@ local playerStats = STATSMAN:GetCurStageStats():GetPlayerStageStats(player)
 local grade = playerStats:GetGrade()
 local award = AwardMap[playerStats:GetStageAward()]
 local hasStream = false
+local setStyle = 1			--1=Simply Love, 2=ITG2, 3=ITG3
 
 -- "I passd with a q though."
 local title = GAMESTATE:GetCurrentSong():GetDisplayFullTitle()

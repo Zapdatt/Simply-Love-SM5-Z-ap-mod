@@ -133,6 +133,10 @@ local permitted_profile_settings = {
 	FadeFantastic		 = "boolean",
 	NoBar				 = "boolean",
 	
+	--Z(ap)-mod specific
+	Vocalization 		 = "string",
+	GradeStyle       	 = "string",
+	
 	----------------------------------
 	-- Profile Settings without OptionRows
 	-- these settings are saved per-profile, but are transparently managed by the theme
