@@ -5,7 +5,7 @@ For the actual Zmod go [here](https://github.com/zarzob/Simply-Love-SM5)
 
   * Reintroduciton of vocalization. Based on [Horseys Simply Love](https://github.com/Horsey-/Horseys-Simply-Love/commit/b7c9a7cef0b7fe0455b0f2bebd6aa7dfedf1fbed).
   * Saving selected vocalization option to player profile.
-  * 3D-models and animations for grades from ITG2 and ITG3. (Animations like how they appear on the result screen are not exact due to differences in themes).
+  * 3D-models and animations for grades from ITG2 and ITG3. (Animations such as how they appear on the result screen are not exact due to differences in themes).
   * Menu option for selecting grade style in advanced options.
   * Saving selected grade style to player profile.
 
