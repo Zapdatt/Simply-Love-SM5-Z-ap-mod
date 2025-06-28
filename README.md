@@ -1,6 +1,9 @@
 # This is just my personal fork of Zmod.
 For the actual Zmod go [here](https://github.com/zarzob/Simply-Love-SM5)
 
+## Screenshot:
+![Screenshot](Example.PNG)
+
 ## What this fork adds:
 
   * Reintroduciton of vocalization. Based on [Horseys Simply Love](https://github.com/Horsey-/Horseys-Simply-Love/commit/b7c9a7cef0b7fe0455b0f2bebd6aa7dfedf1fbed).
