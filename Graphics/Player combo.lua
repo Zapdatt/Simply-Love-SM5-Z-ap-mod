@@ -8,6 +8,14 @@ local combo_font = (FindInTable(mods.ComboFont, available_fonts) ~= nil and mods
 local worst_judgment = 1
 local combo_active = false
 
+local combo_explosion_style = mods.ComboExplosionStyle or "SimplyLove" -- fallback if none selected 
+
+if combo_explosion_style == "Random" then
+	local c_options = { "SimplyLove", "ITG" }
+	combo_explosion_style = options[math.random(#options)]
+end
+
+
 if mods.HideCombo or combo_font == nil then
 	return Def.Actor{ InitCommand=function(self) self:visible(false) end }
 end
@@ -63,9 +71,19 @@ local af = Def.ActorFrame{
 if not mods.HideComboExplosions then
 	-- load the combo milestones actors into the Player combo; they will
 	-- listen for the appropriate Milestone command from the engine
-	af[#af+1] = LoadActor( THEME:GetPathG("Combo","100Milestone") )..{ Name="OneHundredMilestone" }
-	af[#af+1] = LoadActor( THEME:GetPathG("Combo","1000Milestone") )..{ Name="OneThousandMilestone" }
+
+
+	--Z-ap-mod basically just check what combo explosion the player has chosen.
+
+	if combo_explosion_style == "SimplyLove" then
+		af[#af+1] = LoadActor( THEME:GetPathG("Combo","100Milestone") )..{ Name="OneHundredMilestone" }
+		af[#af+1] = LoadActor( THEME:GetPathG("Combo","1000Milestone") )..{ Name="OneThousandMilestone" }
+	elseif combo_explosion_style == "ITG" then
+		af[#af+1] = LoadActor( THEME:GetPathG("ITGCombo","1000Milestone") )..{ Name="OneHundredMilestone" }
+		af[#af+1] = LoadActor( THEME:GetPathG("ITGCombo","100Milestone") )..{ Name="OneThousandMilestone" }
+	end
 end
+
 
 -- Combo fonts should be monospaced so that each digit's alignment remains
 -- consistent (i.e., not visually distracting) as the combo continually grows
