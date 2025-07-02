@@ -11,13 +11,15 @@ For the actual Zmod go [here](https://github.com/zarzob/Simply-Love-SM5)
   * 3D-models and animations for grades from ITG2 and ITG3. (Animations such as how they appear on the result screen are not exact due to differences in themes).
   * Menu option for selecting grade style in advanced options.
   * Saving selected grade style to player profile.
+  * Introduce a menu option for selecting combo explosion with choice between ITG and Simply Love.
+  * Save selected combo explosion to player profile
 
 ## This fork does not:
 
-  * Include my personal judgement fonts, vocalizations, combo fonts, etc.
+  * Include my personal collection of judgement fonts, vocalizations, combo fonts, etc.
+  (It will however include the ones made by myself or friends, (curretly Rokoroyo))
 
 ## Planned additions:
-  * Introduce a menu option for selecting combo animations with choice between ITG2 and Simply Love.
   * Introduce ITG3's Full Combo animations.
   * Allowing for both the judgement counter and visualized pacemaker (or whatever it's called. The IIDX looking one) to be present at the same time.
   * Allow rebinding of folder close command.
@@ -25,6 +27,7 @@ For the actual Zmod go [here](https://github.com/zarzob/Simply-Love-SM5)
 
 ## Thing that could be done if I feel like bothering:
   * Make grade style loading less hard coded and instead just read from a common folder. (May be useful, but there's only like 3 of them anyways so why bother?)
+  * Same for combo explision, but same thing where idek if I can find any more to add regardless, so why bother?
 
 # Further...
 
