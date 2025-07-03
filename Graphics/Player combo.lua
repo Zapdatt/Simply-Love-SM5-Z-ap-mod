@@ -11,7 +11,7 @@ local combo_active = false
 local combo_explosion_style = mods.ComboExplosionStyle or "SimplyLove" -- fallback if none selected 
 
 if combo_explosion_style == "Random" then
-	local c_options = { "SimplyLove", "ITG" }
+	local options = { "SimplyLove", "ITG" }
 	combo_explosion_style = options[math.random(#options)]
 end
 
