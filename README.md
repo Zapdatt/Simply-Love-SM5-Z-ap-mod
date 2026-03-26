@@ -1,6 +1,10 @@
 # This is just my personal fork of Zmod.
 For the actual Zmod go [here](https://github.com/zarzob/Simply-Love-SM5)
 
+
+Current build is for ITGMania 1.2.0, Simply Love 5.8.0.
+Bruh I forgot that the system image isn't updated yet so I can't even use this now. 
+
 ## Screenshot:
 ![Screenshot](Example.PNG)
 
@@ -27,7 +31,7 @@ For the actual Zmod go [here](https://github.com/zarzob/Simply-Love-SM5)
 
 ## Thing that could be done if I feel like bothering:
   * Make grade style loading less hard coded and instead just read from a common folder. (May be useful, but there's only like 3 of them anyways so why bother?)
-  * Same for combo explision, but same thing where idek if I can find any more to add regardless, so why bother?
+  * Same for combo explosion, but same thing where idek if I can find any more to add regardless, so why bother?
 
 # Further...
 
