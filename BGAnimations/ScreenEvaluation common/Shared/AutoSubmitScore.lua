@@ -92,6 +92,9 @@ local AttemptDownloads = function(res)
 	for i=1,2 do
 		local playerStr = "player"..i
 		local events = {"rpg", "itl"}
+		local player = "PlayerNumber_P"..i
+		local itlDownloadsFound = false
+
 
 		for event in ivalues(events) do
 			if data and data[playerStr] and data[playerStr][event] then
@@ -110,7 +113,6 @@ local AttemptDownloads = function(res)
 
 							if ThemePrefs.Get("SeparateUnlocksByPlayer") then
 								local profileName = "NoName"
-								local player = "PlayerNumber_P"..i
 								if (PROFILEMAN:IsPersistentProfile(player) and
 										PROFILEMAN:GetProfile(player)) then
 									profileName = PROFILEMAN:GetProfile(player):GetDisplayName()
@@ -350,6 +352,26 @@ local AutoSubmitRequestProcessor = function(res, overlay)
 						local eventAf = overlay:GetChild("AutoSubmitMaster"):GetChild("EventOverlay"):GetChild("P"..i.."EventAf")
 						eventAf:playcommand("Show", {data=data[playerStr]})
 						shouldDisplayOverlay = true
+
+						if data[playerStr]["itl"] then
+							-- Check for downloadFolders
+							local itlData = data[playerStr]["itl"]
+							if itlData["progress"] and itlData["progress"]["questsCompleted"] then
+								local quests = itlData["progress"]["questsCompleted"]
+								local hasDownloadFolders = false
+								for quest in ivalues(quests) do
+									if quest["songDownloadFolders"] then
+										local downloadFolders = quest["songDownloadFolders"]
+										UpdateItlUnlocks("PlayerNumber_P"..side, downloadFolders)
+										hasDownloadFolders = true
+									end
+								end
+								if hasDownloadFolders then
+									-- Write out the file if we found any download unlocks.
+									WriteItlFile("PlayerNumber_P"..side)
+								end
+							end
+						end
 					end
 
 					-- Only update PB/WR messages on the side that is joined
@@ -437,65 +459,43 @@ end
 local af = Def.ActorFrame {
 	Name="AutoSubmitMaster",
 	OnCommand=function(self)
-		-- dummy response for event overlay testing
-		 -- local overlay = SCREENMAN:GetTopScreen():GetChild("Overlay"):GetChild("ScreenEval Common")
-		 -- overlay:GetChild("AutoSubmitMaster"):GetChild("EventOverlay"):visible(true)
-		 -- overlay:queuecommand("DirectInputToEventOverlayHandler")
+		-- local overlay = SCREENMAN:GetTopScreen():GetChild("Overlay"):GetChild("ScreenEval Common")
+		-- overlay:GetChild("AutoSubmitMaster"):GetChild("EventOverlay"):visible(true)
+		-- overlay:queuecommand("DirectInputToEventOverlayHandler")
 
-		 -- local eventAf = overlay:GetChild("AutoSubmitMaster"):GetChild("EventOverlay"):GetChild("P1EventAf")
-		 -- eventAf:playcommand("Show", {data={
-		 --	["rpg"] = {
-		 --		["name"] = "Stamina RPG 9",
-		 --		["scoreDelta"] = 10,
-		 --		["rateDelta"] = 10,
-		 --		["progress"] = {
-		 --			["statImprovements"] = {
-		 --				{
-		 --					["name"] = "tp",
-		 --					["gained"] = 12345,
-		 --				}
-		 --			},
-		 --			["questsCompleted"] = {
-		 --				{
-		 --					["title"] = "SN Daily I",
-		 --					["rewards"] = {
-		 --						{
-		 --							["type"] = "ad-hoc",
-		 --							["description"] = "Good Job!"
-		 --						}
-		 --					}
-		 --				}
-		 --			},
-		 --		},
-		 --		["result"] = "score-added",
-		 --		["rpgLeaderboard"] = {
-		 --			{
-		 --				["rank"] = 1,
-		 --				["name"] = "Player1",
-		 --				["score"] = 9900,
-		 --				["date"] ="2024-05-05 1:20:30",
-		 --				["isRival"] = false,
-		 --				["isSelf"] = false,
-		 --			},
-		 --			{
-		 --				["rank"] = 2,
-		 --				["name"] = "Player2",
-		 --				["score"] = 9800,
-		 --				["date"] ="2024-05-05 1:20:30",
-		 --				["isRival"] = true,
-		 --				["isSelf"] = false,
-		 --			},
-		 --			{
-		 --				["rank"] = 3,
-		 --				["name"] = "Player3",
-		 --				["score"] = 9700,
-		 --				["date"] ="2024-05-05 1:20:30",
-		 --				["isRival"] = false,
-		 --				["isSelf"] = true,
-		 --			}
-		 --		}
-		 --	}
-		 -- }})
+		-- local eventAf = overlay:GetChild("AutoSubmitMaster"):GetChild("EventOverlay"):GetChild("P1EventAf")
+		-- eventAf:playcommand("Show", {data={
+		-- 	["rpg"] = {
+		-- 		["name"] = "SRPG9",
+		-- 		["result"] = "score-added",
+		-- 		["rpgLeaderboard"] = {
+		-- 			{
+		-- 				["rank"] = 1,
+		-- 				["name"] = "Player1",
+		-- 				["score"] = 9900,
+		-- 				["date"] ="2024-05-05 1:20:30",
+		-- 				["isRival"] = false,
+		-- 				["isSelf"] = false,
+		-- 			},
+		-- 			{
+		-- 				["rank"] = 2,
+		-- 				["name"] = "Player2",
+		-- 				["score"] = 9800,
+		-- 				["date"] ="2024-05-05 1:20:30",
+		-- 				["isRival"] = true,
+		-- 				["isSelf"] = false,
+		-- 			},
+		-- 			{
+		-- 				["rank"] = 3,
+		-- 				["name"] = "Player3",
+		-- 				["score"] = 9700,
+		-- 				["date"] ="2024-05-05 1:20:30",
+		-- 				["isRival"] = false,
+		-- 				["isSelf"] = true,
+		-- 			}
+		-- 		}
+		-- 	}
+		-- }})
 	end,
 	RequestResponseActor(17, 50)..{
 		OnCommand=function(self)
@@ -512,7 +512,7 @@ local af = Def.ActorFrame {
 				local pn = ToEnumShortString(player)
 
 				if GAMESTATE:IsHumanPlayer(player) and GAMESTATE:IsSideJoined(player) then
-					local _, valid = ValidForGrooveStats(player)
+					local _, valid, _ = ValidForGrooveStats(player)
 					local stats = STATSMAN:GetCurStageStats():GetPlayerStageStats(player)
 					local submitForPlayer = false
 
@@ -536,6 +536,7 @@ local af = Def.ActorFrame {
 								rescoreCounts=GetRescoredJudgmentCounts(player),
 								usedCmod=(GAMESTATE:GetPlayerState(pn):GetPlayerOptions("ModsLevel_Preferred"):CMod() ~= nil),
 								comment=CreateCommentString(player),
+								playerOptions=GetPlayerOptionsJsonForGrooveStats(player),
 							}
 							sendRequest = true
 							submitForPlayer = true
@@ -554,18 +555,18 @@ local af = Def.ActorFrame {
 			-- Only send the request if it's applicable.
 			if sendRequest then
 				-- Unjoined players won't have the text displayed.
-             
-                self:GetParent():GetChild("P1SubmitText"):settext(THEME:GetString("GrooveStats", "Submitting"))
+
+				self:GetParent():GetChild("P1SubmitText"):settext(THEME:GetString("GrooveStats", "Submitting"))
 				self:GetParent():GetChild("P2SubmitText"):settext(THEME:GetString("GrooveStats", "Submitting"))
 					
 				self:playcommand("MakeGrooveStatsRequest", {
-					endpoint="score-submit.php?"..NETWORK:EncodeQueryParameters(query),
+					endpoint="?action=scoreSubmit&"..NETWORK:EncodeQueryParameters(query),
 					method="POST",
 					headers=headers,
 					body=JsonEncode(body),
 					timeout=30,
 					callback=AutoSubmitRequestProcessor,
-				args=SCREENMAN:GetTopScreen():GetChild("Overlay"):GetChild("ScreenEval Common"),
+					args=SCREENMAN:GetTopScreen():GetChild("Overlay"):GetChild("ScreenEval Common"),
 				})
 			end
 		end

@@ -33,7 +33,9 @@ else
 end
 
 local Update = function(self, delta)
-	if columnCues ~= nil and curIndex <= #columnCues then
+	if SCREENMAN:GetTopScreen():IsPaused() then return end
+
+	if curIndex <= #columnCues then
 		local curTime = playerState:GetSongPosition():GetMusicSecondsVisible()
 		local columnCue = columnCues[curIndex]
 		local startTime = columnCue.startTime
@@ -85,6 +87,19 @@ local af = Def.ActorFrame{
 		self:SetUpdateFunction(Update)
 	end,
 	CurrentSongChangedMessageCommand=function(self)
+		local steps = nil
+		if GAMESTATE:IsCourseMode() then
+			local songIndex = GAMESTATE:GetCourseSongIndex() + 1
+			local trail = GAMESTATE:GetCurrentTrail(player):GetTrailEntries()[songIndex]
+			steps = trail:GetSteps()
+		else
+			steps = GAMESTATE:GetCurrentSteps(player)
+		end
+
+		-- Ensure that SL[pn].Streams.ColumnCues is populated. This will skip
+		-- parsing if SL[pn].Streams is already up to date.
+		ParseChartInfo(steps, pn)
+
 		playerState = GAMESTATE:GetPlayerState(player)
 		columnCues = SL[pn].Streams.ColumnCues
 		curIndex = 1
@@ -160,14 +175,13 @@ for columnIndex=1,numColumns do
 			FlashCommand=function(self, params)
 				local flashDuration = params.duration
 				local clr = params.isMine and color("1,0,0,0.12") or color("0.3,1,1,0.12")
-				if mods.ColumnCues then
-					self:stoptweening()
-						:decelerate(fadeTime)
-						:diffuse(clr)
-						:sleep(flashDuration - 2*fadeTime)
-						:accelerate(fadeTime)
-						:diffuse(0,0,0,0)
-				end
+				self:stoptweening()
+					:decelerate(fadeTime)
+					:diffuse(clr)
+					:sleep(flashDuration - 2*fadeTime)
+					:accelerate(fadeTime)
+					:diffuse(0,0,0,0)
+
 				if flashDuration >= 5 and mods.ColumnCountdown then
 					breakTime = flashDuration
 					if text ~= nil then
@@ -219,5 +233,4 @@ for columnIndex=1,numColumns do
 		}
 	}
 end
-
 return af

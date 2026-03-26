@@ -299,26 +299,26 @@ local GetRpgPaneFunctions = function(eventAf, rpgData, player)
 				table.insert(quests, table.concat(questStrings, "\n"))
 			end
 		end
-		
-		-- Also pass the response data to the progress box.
-		local progressBox = SCREENMAN:GetTopScreen()
-				:GetChild("Overlay")
-				:GetChild("ScreenEval Common")
-				:GetChild(pn.."_AF_Upper")
-				:GetChild("EventProgress"..pn)
-		if progressBox ~= nil then
-			progressBox:playcommand("SetData",{
-				rpgData = {
-					["name"] = rpgData["name"],
-					["score"] = score,
-					["scoreDelta"] = scoreDelta,
-					["rate"] = rate,
-					["rateDelta"] = rateDelta,
-					["statImprovements"] = progress["statImprovements"],
-					["questsCompleted"] = progress["questsCompleted"],
-				},
-			})
-		end
+	end
+	
+	-- Also pass the response data to the progress box.
+	local progressBox = SCREENMAN:GetTopScreen()
+			:GetChild("Overlay")
+			:GetChild("ScreenEval Common")
+			:GetChild(pn.."_AF_Upper")
+			:GetChild("EventProgress"..pn)
+	if progressBox ~= nil then
+		progressBox:playcommand("SetData",{
+			rpgData = {
+				["name"] = rpgData["name"],
+				["score"] = score,
+				["scoreDelta"] = scoreDelta,
+				["rate"] = rate,
+				["rateDelta"] = rateDelta,
+				["statImprovements"] = progress["statImprovements"],
+				["questsCompleted"] = progress["questsCompleted"],
+			},
+		})
 	end
 
 	table.insert(paneTexts, string.format(
@@ -573,9 +573,9 @@ local GetItlPaneFunctions = function(eventAf, itlData, player)
 
 				for reward in ivalues(achievement["rewards"]) do
 					local tier = reward["tier"]
-					if tier ~= "Default" then
+					if tostring(tier) ~= "0" then
 						table.insert(achievementStrings, string.format(
-							"\"%s\" Tier",
+							"Tier %s",
 							tier
 						))
 					end
@@ -587,7 +587,7 @@ local GetItlPaneFunctions = function(eventAf, itlData, player)
 						))
 					end
 
-					if reward["titleUnlocked"] then
+					if reward["titleUnlocked"] and #reward["titleUnlocked"] > 0 then
 						table.insert(achievementStrings, string.format(
 							"Unlocked the \"%s\" Title!",
 							reward["titleUnlocked"]

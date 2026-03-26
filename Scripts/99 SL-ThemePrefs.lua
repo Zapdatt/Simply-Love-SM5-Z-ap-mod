@@ -329,6 +329,7 @@ SL_CustomPrefs.Get = function()
 			Choices =  { THEME:GetString("ThemePrefs","Yes"), THEME:GetString("ThemePrefs", "No") },
 			Values  = { true, false }
 		},
+
 		QRLogin = {
 			Default = "Sometimes",
 			Choices = {
@@ -337,6 +338,12 @@ SL_CustomPrefs.Get = function()
 				THEME:GetString("ThemePrefs", "Never"),
 			},
 			Values = { "Always", "Sometimes", "Never" }
+		},
+
+		EnableOnlineLobbies = {
+			Default = false,
+			Choices =  { THEME:GetString("ThemePrefs","Yes"), THEME:GetString("ThemePrefs", "No") },
+			Values  = { true, false }
 		},
 
 		-- - - - - - - - - - - - - - - - - - - -

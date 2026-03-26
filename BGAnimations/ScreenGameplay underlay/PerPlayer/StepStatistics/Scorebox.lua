@@ -429,7 +429,7 @@ local af = Def.ActorFrame{
 				self:GetParent():GetChild("Rank4"):settext("")
 				self:GetParent():GetChild("Rank5"):settext("")
 				self:playcommand("MakeGrooveStatsRequest", {
-					endpoint="player-leaderboards.php?"..NETWORK:EncodeQueryParameters(query),
+					endpoint="?action=playerLeaderboards&"..NETWORK:EncodeQueryParameters(query),
 					method="GET",
 					headers=headers,
 					timeout=10,

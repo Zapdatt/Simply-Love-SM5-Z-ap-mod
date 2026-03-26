@@ -582,7 +582,7 @@ local af = Def.ActorFrame{
 				
 				ResetAllData()
 				self:playcommand("MakeGrooveStatsRequest", {
-					endpoint="player-leaderboards.php?"..NETWORK:EncodeQueryParameters(query),
+					endpoint="?action=playerLeaderboards&"..NETWORK:EncodeQueryParameters(query),
 					method="GET",
 					headers=headers,
 					timeout=10,

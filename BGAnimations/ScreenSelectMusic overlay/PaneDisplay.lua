@@ -61,6 +61,9 @@ local GetMachineTag = function(gsEntry)
 end
 
 local GetScoresRequestProcessor = function(res, params)
+	local screen = SCREENMAN:GetTopScreen()
+	if not screen or screen:GetName() ~= "ScreenSelectMusic" then return end
+
 	local master = params.master
 	if master == nil then return end
 	-- If we're not hovering over a song when we get the request, then we don't
@@ -80,6 +83,7 @@ local GetScoresRequestProcessor = function(res, params)
 
 	for i=1,2 do
 		local paneDisplay = master:GetChild("PaneDisplayP"..i)
+
 		local machineScore = paneDisplay:GetChild("MachineHighScore")
 		local machineName = paneDisplay:GetChild("MachineHighScoreName")
 
@@ -379,7 +383,7 @@ af[#af+1] = RequestResponseActor(17, 50)..{
 				GetScoresRequestProcessor(res, params)
 			else
 				self:playcommand("MakeGrooveStatsRequest", {
-					endpoint="player-scores.php?"..NETWORK:EncodeQueryParameters(query),
+					endpoint="?action=playerScores&"..NETWORK:EncodeQueryParameters(query),
 					method="GET",
 					headers=headers,
 					timeout=10,
@@ -388,7 +392,7 @@ af[#af+1] = RequestResponseActor(17, 50)..{
 				})
 			end
 		end
-	end,
+	end
 }
 
 for player in ivalues(PlayerNumber) do
