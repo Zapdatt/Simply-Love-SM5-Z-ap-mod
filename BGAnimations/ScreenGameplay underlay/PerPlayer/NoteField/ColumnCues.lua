@@ -33,7 +33,8 @@ else
 end
 
 local Update = function(self, delta)
-	if SCREENMAN:GetTopScreen():IsPaused() then return end
+	local topScreen = SCREENMAN:GetTopScreen()
+	if topScreen and topScreen.IsPaused and topScreen:IsPaused() then return end
 
 	if curIndex <= #columnCues then
 		local curTime = playerState:GetSongPosition():GetMusicSecondsVisible()
@@ -233,4 +234,5 @@ for columnIndex=1,numColumns do
 		}
 	}
 end
+
 return af
