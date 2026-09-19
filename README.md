@@ -2,7 +2,7 @@
 For the actual Zmod go [here](https://github.com/zarzob/Simply-Love-SM5)
 
 
-Current build is for ITGMania 1.2.0, Simply Love 5.8.0.
+Current build is for ITGMania 1.3.0, Simply Love 5.9.0.
 Bruh I forgot that the system image isn't updated yet so I can't even use this now. 
 
 ## Screenshot:
