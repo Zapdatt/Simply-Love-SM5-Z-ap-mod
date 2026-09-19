@@ -12,8 +12,13 @@ local AwardMap = {
     -- FullComboW4 technically doesn't exist, but we create it on the fly below.
     ["StageAward_FullComboW4"] = 4,
 }
+local styletype = ToEnumShortString(GAMESTATE:GetCurrentStyle():GetStyleType())
 
 local playerStats = STATSMAN:GetCurStageStats():GetPlayerStageStats(player)
+local routineStatus = SL.Global.RoutineStatus
+if (styletype == "TwoPlayersSharedSides") then
+	playerStats = STATSMAN:GetCurStageStats():GetRoutineStageStats()
+end
 local grade = playerStats:GetGrade()
 --local grade = "Grade_Failed"                  --override for testing
 local award = AwardMap[playerStats:GetStageAward()]

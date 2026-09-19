@@ -55,6 +55,13 @@ local af = Def.ActorFrame{
 		if finished ~= total then
 			self:sleep(0.1):queuecommand("RefreshStatus")
 		end
+	end,
+	
+	NewDownloadsCompletedMessageCommand=function(self)
+		if SL.NewDownloadsCompleted and SCREENMAN:GetTopScreen():GetNextScreenName() == "ScreenSelectMusic" then
+			SL.NewDownloadsCompleted = false
+			SCREENMAN:GetTopScreen():SetNextScreenName("ScreenReloadSongsSSM")
+		end
 	end
 }
 

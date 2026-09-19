@@ -4,6 +4,8 @@ local af = Def.ActorFrame{
 	-- If we're here in SelectMusic, set GameplayReloadCheck to false, signifying that the next
 	-- time ScreenGameplay loads, it should have a properly animated entrance.
 	InitCommand=function(self)
+		SL.Global.IsGameplay = false
+		UnzipQueue()
 		SL.Global.GameplayReloadCheck = false
 		generateFavoritesForMusicWheel()
 		
@@ -56,6 +58,9 @@ local af = Def.ActorFrame{
 	-- Apply player modifiers from profile
 	LoadActor("./PlayerModifiers.lua"),
 
+	-- allow stepcharts from multiple styles (single, double, routine) to coexist
+	-- in the same music wheel
+	LoadActor("./AutoSetStyle.lua"),
 	-- ---------------------------------------------------
 	-- next, load visual elements; the order of these matters
 	-- i.e. content in PerPlayer/Over needs to draw on top of content from PerPlayer/Under

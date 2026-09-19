@@ -520,12 +520,12 @@ local af = Def.ActorFrame{
 				self:queuecommand("ChartParsed")
 			end
 		end,
-		ChartParsedCommand=function(self)
+		ChartParsedMessageCommand=function(self)
 			if not self.leaving_screen then
 				self:queuecommand("MakeRequest")
 			end
 		end,
-		MakeRequestCommand=function(self)				
+		MakeRequestCommand=function(self)
 			local sendRequest = false
 			local headers = {}
 			local query = {
@@ -708,7 +708,7 @@ local af = Def.ActorFrame{
 	},
 	-- SRPG Logo
 	Def.Sprite{
-		Texture=THEME:GetPathG("", "_VisualStyles/SRPG9/logo_alt (doubleres).png"),
+		Texture=THEME:GetPathG("", "_VisualStyles/SRPG10/logo_alt (doubleres).png"),
 		Name="SRPGLogo",
 		InitCommand=function(self)
 			self:diffusealpha(0.4):zoom(0.07):diffusealpha(0)

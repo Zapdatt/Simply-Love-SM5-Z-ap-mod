@@ -1,3 +1,5 @@
+local download_queue = {}
+
 GrooveStatsURL = function()
 	-- For test GrooveStats responses, create a file called GrooveStats_UAT.txt
 	-- in your theme's Other directory. To toggle between live and UAT, delete/rename this file.
@@ -782,39 +784,62 @@ DownloadEventUnlock = function(url, unlockName, packName)
 					-- Downloads are usually of the form:
 					--    /Downloads/<name>.zip/<song_folders/
 					local destinationPack = "/Songs/"..packName.."/"
-					if not FILEMAN:Unzip("/Downloads/"..downloadfile, destinationPack) then
-						downloadInfo.ErrorMessage = "Failed to Unzip!"
+					if not SL.Global.IsGameplay then
+						if not FILEMAN:Unzip("/Downloads/"..downloadfile, destinationPack) then
+							downloadInfo.ErrorMessage = "Failed to Unzip!"
+						else
+							if SL.GrooveStats.UnlocksCache[url] == nil then
+								SL.GrooveStats.UnlocksCache[url] = {}
+							end
+							SL.GrooveStats.UnlocksCache[url][packName] = true
+							
+							SL.NewDownloadsCompleted = true
+							MESSAGEMAN:Broadcast("NewDownloadsCompleted")
+
+							-- If Pack.ini doesn't exist (new unlock for this player), create it.
+							local group = string.lower(packName)
+							local year = 2026
+							local packIniPath = destinationPack.."Pack.ini"
+							if string.find(group, "itl online "..year.." unlocks") then
+								if not FILEMAN:DoesFileExist(packIniPath) then
+									IniFile.WriteFile(packIniPath, {
+										["Group"]={
+											["Version"]=1,
+											["DisplayTitle"]=packName,
+											["TranslitTitle"]=packName,
+											["SortTitle"]=packName,
+											["Series"]="ITL Online",
+											["Year"]=year,
+											["Banner"]="",
+											["SyncOffset"]="NULL",
+										}
+									})
+								end
+							elseif string.find(group, "stamina rpg 10 unlocks") then
+								if not FILEMAN:DoesFileExist(packIniPath) then
+									IniFile.WriteFile(packIniPath, {
+										["Group"]={
+											["Version"]=1,
+											["DisplayTitle"]=packName,
+											["TranslitTitle"]=packName,
+											["SortTitle"]=packName,
+											["Series"]="Stamina RPG",
+											["Year"]=year,
+											["Banner"]="",
+											["SyncOffset"]="ITG",
+										}
+									})
+								end
+							end
+
+							WriteUnlocksCache()
+						end
 					else
 						if SL.GrooveStats.UnlocksCache[url] == nil then
 							SL.GrooveStats.UnlocksCache[url] = {}
 						end
 						SL.GrooveStats.UnlocksCache[url][packName] = true
-						
-						SL.NewDownloadsCompleted = true
-						MESSAGEMAN:Broadcast("NewDownloadsCompleted")
-
-						-- If Pack.ini doesn't exist (new unlock for this player), create it.
-						local group = string.lower(packName)
-						local year = 2026
-						if string.find(group, "itl online "..year.." unlocks") then
-							local packIniPath = destinationPack.."Pack.ini"
-							if not FILEMAN:DoesFileExist(packIniPath) then
-								IniFile.WriteFile(packIniPath, {
-									["Group"]={
-										["Version"]=1,
-										["DisplayTitle"]=packName,
-										["TranslitTitle"]=packName,
-										["SortTitle"]=packName,
-										["Series"]="ITL Online",
-										["Year"]=year,
-										["Banner"]="",
-										["SyncOffset"]="NULL",
-									}
-								})
-							end
-						end
-
-						WriteUnlocksCache()
+						download_queue[#download_queue+1] = {downloadfile, packName}
 					end
 				else
 					downloadInfo.ErrorMessage = "Download is not a Zip!"
@@ -825,6 +850,62 @@ DownloadEventUnlock = function(url, unlockName, packName)
 			end
 		end,
 	}
+end
+
+-- -----------------------------------------------------------------------
+-- Unzips downloads that were completed during gameplay
+UnzipQueue = function()
+	local completed_queue = download_queue
+	download_queue = {}
+	for download in ivalues(completed_queue) do
+		local downloadfile = download[1]
+		local packName = download[2]
+		local destinationPack = "/Songs/"..packName.."/"
+		if not FILEMAN:Unzip("/Downloads/"..downloadfile, destinationPack) then
+			downloadInfo.ErrorMessage = "Failed to Unzip!"
+		else
+			SL.NewDownloadsCompleted = true
+			MESSAGEMAN:Broadcast("NewDownloadsCompleted")
+
+			-- If Pack.ini doesn't exist (new unlock for this player), create it.
+			local group = string.lower(packName)
+			local year = 2026
+			local packIniPath = destinationPack.."Pack.ini"
+			if string.find(group, "itl online "..year.." unlocks") then
+				if not FILEMAN:DoesFileExist(packIniPath) then
+					IniFile.WriteFile(packIniPath, {
+						["Group"]={
+							["Version"]=1,
+							["DisplayTitle"]=packName,
+							["TranslitTitle"]=packName,
+							["SortTitle"]=packName,
+							["Series"]="ITL Online",
+							["Year"]=year,
+							["Banner"]="",
+							["SyncOffset"]="NULL",
+						}
+					})
+				end
+			elseif string.find(group, "stamina rpg 10 unlocks") then
+				if not FILEMAN:DoesFileExist(packIniPath) then
+					IniFile.WriteFile(packIniPath, {
+						["Group"]={
+							["Version"]=1,
+							["DisplayTitle"]=packName,
+							["TranslitTitle"]=packName,
+							["SortTitle"]=packName,
+							["Series"]="Stamina RPG",
+							["Year"]=year,
+							["Banner"]="",
+							["SyncOffset"]="ITG",
+						}
+					})
+				end
+			end
+
+			WriteUnlocksCache()
+		end
+	end
 end
 
 -- -----------------------------------------------------------------------
@@ -899,7 +980,7 @@ CreateGrooveStatsPlayerOptionKeys = function()
 				[6]="Emoticon 2x7 (doubleres).png",
 				[7]="Focus 2x7 (doubleres).png",
 				[8]="Grammar 2x7 (doubleres).png",
-				[9]="GrooveNights 2x7.png",
+				[9]="GrooveNights 2x7 (doubleres).png",
 				[10]="ITG2 2x7 (doubleres).png",
 				[11]="Love 2x7 (doubleres).png",
 				[12]="Love Chroma 2x7 (doubleres).png",
@@ -910,6 +991,7 @@ CreateGrooveStatsPlayerOptionKeys = function()
 				[17]="Shift 2x7 (doubleres).png",
 				[18]="Tactics 2x7 (doubleres).png",
 				[19]="Wendy 2x7 (doubleres).png",
+				[20]="Censored 1x7 (doubleres).png",
 				-- Digital Dance
 				[100]="Chalk 2x7 (doubleres).png",
 				[101]="Digital 2x7 (doubleres).png",
@@ -956,7 +1038,12 @@ CreateGrooveStatsPlayerOptionKeys = function()
 		["HideScore"] = CreateKey("boolean"),
 		["HideDanger"] = CreateKey("boolean"),
 		["HideComboExplosions"] = CreateKey("boolean"),
-		["ColumnFlashOnMiss"] = CreateKey("boolean"),
+		["FlashMiss"] = CreateKey("boolean"),
+		["FlashWayOff"] = CreateKey("boolean"),
+		["FlashDecent"] = CreateKey("boolean"),
+		["FlashGreat"] = CreateKey("boolean"),
+		["FlashExcellent"] = CreateKey("boolean"),
+		["FlashFantastic"] = CreateKey("boolean"),
 		["SubtractiveScoring"] = CreateKey("boolean"),
 		["MeasureCounter"] = CreateKey("string", {
 			[1]="None",
@@ -1014,6 +1101,7 @@ CreateGrooveStatsPlayerOptionKeys = function()
 		}),
 		["HideEarlyDecentWayOffJudgments"] = CreateKey("boolean"),
 		["HideEarlyDecentWayOffFlash"] = CreateKey("boolean"),
+		["ShowEarlyDecentWayOffColumn"] = CreateKey("boolean"),
 		["ShowFaPlusWindow"] = CreateKey("boolean"),
 		["ShowExScore"] = CreateKey("boolean"),
 		["ShowFaPlusPane"] = CreateKey("boolean"),
@@ -1143,6 +1231,8 @@ GetPlayerOptionsJsonForGrooveStats = function(player)
 
 	MaybeSetOption(options, "Mini", mini, "number")
 	MaybeSetOption(options, "VisualDelay", visualDelay, "number")
+	MaybeSetOption(options, "BackgroundFilter", backgroundFilter, "number")
+	MaybeSetOption(options, "HideLookahead", hideLookahead, "number")
 
 	MaybeSetOption(options, "Cover", hasCover, "boolean")
 	MaybeSetOption(options, "NoMines", hasNoMines, "boolean")
